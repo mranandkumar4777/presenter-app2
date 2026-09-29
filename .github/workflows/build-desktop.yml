@@ -8,6 +8,8 @@ on:
 jobs:
   build:
     runs-on: windows-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
 
@@ -19,7 +21,9 @@ jobs:
         run: npm install
 
       - name: Build Electron App
-        run: npx electron-builder --win --x64
+        run: npx electron-builder --win --x64 -c.publish=never
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload Desktop App Artifact
         uses: actions/upload-artifact@v4
